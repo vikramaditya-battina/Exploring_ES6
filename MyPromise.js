@@ -1,5 +1,3 @@
- fs = require('fs')
-//first try to implement the promise
 function MyPromise(func){
   //the func will accept two parameters
   this.func = func
@@ -55,32 +53,3 @@ MyPromise.prototype.PleaseReject = function(err){
     this.thenPromise.PleaseReject(err);
   }
 }
-function readFromFile(filename){
-  return new MyPromise((successcallback, failurecallback)=>{
-    fs.readFile(filename, 'utf8', (err, data)=>{
-       if(err){
-          failurecallback(err)
-          return
-       }
-       successcallback(data)
-       return
-    });
-  });
-}
-readFromFile('test1.txt').then((data)=>{
-   console.log("got "+data+" from test1.txt")
-   return readFromFile('test2.txt')
-}).then((data)=>{
-  console.log("got "+data+" from test2.txt")
-  return readFromFile('test6.txt')
-}).catch((err)=>{
-  console.log("got error:-> "+err)
-  return readFromFile('test3.txt')
-}).then((data)=>{
-  console.log("got "+data+" from test3.txt")
-  return readFromFile('test8.txt')
-}).then((data)=>{
-  console.log("got "+data+" from test4.txt")
-}).catch((err)=>{
-  console.log("got error "+err)
-})
